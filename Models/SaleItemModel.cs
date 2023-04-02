@@ -8,6 +8,7 @@
         public decimal SalePrice { get; set; }
         public int QuantitySold { get; set; }
         public decimal Total { get; set; }
-
+        public virtual SaleModel Sale { get; set; }
+        public virtual ProductModel Product { get; set;}
     }
 }
