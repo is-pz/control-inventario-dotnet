@@ -1,6 +1,6 @@
 ﻿namespace control_inventario.Models
 {
-    public class SalesModel
+    public class SaleModel
     {
         public int Id { get; set; }
         public int IdUser { get; set; }

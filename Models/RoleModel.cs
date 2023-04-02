@@ -1,6 +1,6 @@
 ﻿namespace control_inventario.Models
 {
-    public class RolesModel
+    public class RoleModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
