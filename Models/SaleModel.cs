@@ -1,11 +1,19 @@
-﻿namespace control_inventario.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace control_inventario.Models;
+
+public partial class SaleModel
 {
-    public class SaleModel
-    {
-        public int Id { get; set; }
-        public int IdUser { get; set; }
-        public decimal TotalSale { get; set; }
-        public DateTime SoldAt { get; set; }
-        public virtual UserModel User { get; set; }
-    }
+    public int Id { get; set; }
+
+    public int IdUser { get; set; }
+
+    public decimal TotalSale { get; set; }
+
+    public byte[] SoleAt { get; set; } = null!;
+
+    public virtual UserModel IdUserNavigation { get; set; } = null!;
+
+    public virtual ICollection<SaleItemModel> SalesItems { get; } = new List<SaleItemModel>();
 }

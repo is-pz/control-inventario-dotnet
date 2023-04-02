@@ -1,7 +1,11 @@
+using control_inventario.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSqlServer<InventarioDbContext>(builder.Configuration.GetConnectionString("InventarioDb"));
 
 var app = builder.Build();
 
