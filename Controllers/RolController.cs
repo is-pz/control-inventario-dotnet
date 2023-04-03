@@ -1,10 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using control_inventario.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace control_inventario.Controllers
 {
     public class RolController : Controller
     {
+        private readonly IRolService _crud;
+
+        public RolController(IRolService crud)
+        {
+            _crud = crud;
+        }
+
         // GET: RolController
         public ActionResult Index()
         {

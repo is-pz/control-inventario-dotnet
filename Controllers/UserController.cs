@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using control_inventario.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace control_inventario.Controllers
 {
     public class UserController : Controller
     {
+
+        private readonly IUserService _crud;
+
+        public UserController(IUserService crud)
+        {
+            _crud = crud;
+        }
+
         // GET: UserController
         public ActionResult Index()
         {

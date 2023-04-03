@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using control_inventario.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace control_inventario.Controllers
 {
     public class ProductController : Controller
     {
+
+        private readonly IProdutService _crud;
+
+        public ProductController(IProdutService crud)
+        {
+            _crud = crud;
+        }
+
         // GET: ProductController
         public ActionResult Index()
         {

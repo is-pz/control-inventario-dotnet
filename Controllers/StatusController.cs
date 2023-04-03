@@ -1,10 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using control_inventario.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace control_inventario.Controllers
 {
     public class StatusController : Controller
     {
+
+        private readonly IStatusService _crud;
+
+        public StatusController(IStatusService crud)
+        {
+            _crud = crud;
+        }
+
         // GET: StatusController
         public ActionResult Index()
         {
