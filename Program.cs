@@ -1,4 +1,5 @@
 using control_inventario.Data;
+using control_inventario.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSqlServer<InventarioDbContext>(builder.Configuration.GetConnectionString("InventarioDb"));
+
+builder.Services.AddScoped<IStatusService, StatusService>();
+builder.Services.AddScoped<IRolService, RolService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProdutService, ProductService>();
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<ISaleItemService, SaleItemService>();
 
 var app = builder.Build();
 

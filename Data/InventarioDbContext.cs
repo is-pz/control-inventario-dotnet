@@ -24,7 +24,7 @@ public partial class InventarioDbContext : DbContext
 
     public virtual DbSet<SaleItemModel> SalesItems { get; set; }
 
-    public virtual DbSet<StatusModel> Statuses { get; set; }
+    public virtual DbSet<StatusModel> Status { get; set; }
 
     public virtual DbSet<UserModel> Users { get; set; }
 
