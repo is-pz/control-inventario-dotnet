@@ -36,7 +36,7 @@ namespace control_inventario.Services
         {
             SaleItemModel? items = _context.SalesItems.Where(c => c.Id == id).FirstOrDefault();
 
-            _context.Remove(status);
+            _context.Remove(items);
             _context.SaveChanges();
         }
 
