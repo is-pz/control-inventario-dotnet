@@ -1,0 +1,67 @@
+﻿@{
+
+    Layout = "_Layout";
+    ViewBag.Title = "Users";
+
+    List<User> users = ViewBag.Users;
+}
+
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-header">
+            <h2 class="pageheader-title">Users </h2>
+
+            <div class="page-breadcrumb">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb"></ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ============================================================== -->
+<!-- end pageheader  -->
+<!-- ============================================================== -->
+<div class="ecommerce-widget">
+    <div class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12">
+        <div class="card">
+            <div class="card-header text-center" style="display: flex; justify-content: space-between;">
+                <h5>Lista de usuarios</h5>
+                <a asp-controller="User" asp-action="Create" class="btn btn-primary">Add User</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="bg-light">
+                            <tr class="border-0">
+                                <th></th>
+                                <th class="border-0">No.</th>
+                                <th class="border-0">Username</th>
+                                <th class="border-0">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(var user in users)
+                            {
+                                <tr>
+                                    <td></td>
+                                    <td>@user.Id</td>
+                                    <td>@user.Username</td>
+                                    <td class="row" style="margin-left:0!important; margin-right:0!important;">
+                                        <a href="edit_add_user_view.php?id=<?= $user['id'] ?>" class="btn btn-warning">Editar</a>
+                                        <form id="form-delete-<?= $user['id'] ?>" data-id="<?= $user['id'] ?>" action="./delete_user.php" method="POST" class="col-lg-2 form-delete">
+                                            <input type="hidden" name="idUsuario" value="<?= $user['id'] ?>">
+                                            <button class="btn btn-danger btn-delete-form">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace control_inventario.Models;
 
-public partial class RolModel
+public partial class Rol
 {
     public int Id { get; set; }
 
@@ -13,7 +13,7 @@ public partial class RolModel
 
     public int IdStatus { get; set; }
 
-    public virtual StatusModel IdStatusNavigation { get; set; } = null!;
+    public virtual Status IdStatusNavigation { get; set; } = null!;
 
-    public virtual ICollection<UserModel> Users { get; } = new List<UserModel>();
+    public virtual ICollection<User> Users { get; } = new List<User>();
 }

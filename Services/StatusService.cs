@@ -10,23 +10,23 @@ namespace control_inventario.Services
             this._context = inventario;
         }
 
-        public StatusModel? Get(int id)
+        public Status? Get(int id)
         {
-            return _context.Status.Where(c => c.Id == id).FirstOrDefault();
+            return _context.Statuses.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public ICollection<StatusModel> GetAll()
+        public ICollection<Status> GetAll()
         {
-            return _context.Status.ToList();
+            return _context.Statuses.ToList();
         }
 
-        public void Add(StatusModel status)
+        public void Add(Status status)
         {
             _context.Add(status);
             _context.SaveChanges(); 
         }
 
-        public void Update(StatusModel status)
+        public void Update(Status status)
         {
             _context.Update(status);
             _context.SaveChanges();
@@ -34,7 +34,7 @@ namespace control_inventario.Services
 
         public void Delete(int id)
         {
-            StatusModel? status = _context.Status.Where(c => c.Id == id).FirstOrDefault();
+            Status? status = _context.Statuses.Where(c => c.Id == id).FirstOrDefault();
 
             _context.Remove(status);
             _context.SaveChanges();

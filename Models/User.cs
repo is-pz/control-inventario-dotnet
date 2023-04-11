@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace control_inventario.Models;
 
-public partial class UserModel
+public partial class User
 {
     public int Id { get; set; }
 
@@ -19,9 +19,9 @@ public partial class UserModel
 
     public byte[] CreatedAt { get; set; } = null!;
 
-    public virtual RolModel IdRolNavigation { get; set; } = null!;
+    public virtual Rol IdRolNavigation { get; set; } = null!;
 
-    public virtual StatusModel IdStatusNavigation { get; set; } = null!;
+    public virtual Status IdStatusNavigation { get; set; } = null!;
 
-    public virtual ICollection<SaleModel> Sales { get; } = new List<SaleModel>();
+    public virtual ICollection<Sale> Sales { get; } = new List<Sale>();
 }

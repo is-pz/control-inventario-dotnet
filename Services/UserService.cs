@@ -10,23 +10,23 @@ namespace control_inventario.Services
             this._context = inventario;
         }
 
-        public UserModel? Get(int id)
+        public User? Get(int id)
         {
             return _context.Users.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public ICollection<UserModel> GetAll()
+        public ICollection<User> GetAll()
         {
             return _context.Users.ToList();
         }
 
-        public void Add(UserModel user)
+        public void Add(User user)
         {
             _context.Add(user);
             _context.SaveChanges(); 
         }
 
-        public void Update(UserModel user)
+        public void Update(User user)
         {
             _context.Update(user);
             _context.SaveChanges();
@@ -34,7 +34,7 @@ namespace control_inventario.Services
 
         public void Delete(int id)
         {
-            UserModel? user = _context.Users.Where(c => c.Id == id).FirstOrDefault();
+            User? user = _context.Users.Where(c => c.Id == id).FirstOrDefault();
 
             _context.Remove(user);
             _context.SaveChanges();

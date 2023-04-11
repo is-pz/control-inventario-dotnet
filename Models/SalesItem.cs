@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace control_inventario.Models;
 
-public partial class SaleItemModel
+public partial class SalesItem
 {
     public int Id { get; set; }
 
@@ -17,7 +17,7 @@ public partial class SaleItemModel
 
     public decimal Total { get; set; }
 
-    public virtual ProductModel IdProductNavigation { get; set; } = null!;
+    public virtual Product IdProductNavigation { get; set; } = null!;
 
-    public virtual SaleModel IdSaleNavigation { get; set; } = null!;
+    public virtual Sale IdSaleNavigation { get; set; } = null!;
 }

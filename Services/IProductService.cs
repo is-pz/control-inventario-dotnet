@@ -4,10 +4,10 @@ namespace control_inventario.Services
 {
     public interface IProdutService
     {
-        ProductModel? Get(int id);
-        ICollection<ProductModel> GetAll();
-        void Add(ProductModel product);
-        void Update(ProductModel product);
+        Product? Get(int id);
+        ICollection<Product> GetAll();
+        void Add(Product product);
+        void Update(Product product);
         void Delete(int id);
     }
 }

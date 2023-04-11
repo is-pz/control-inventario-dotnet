@@ -10,23 +10,23 @@ namespace control_inventario.Services
             this._context = inventario;
         }
 
-        public RolModel? Get(int id)
+        public Rol? Get(int id)
         {
             return _context.Roles.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public ICollection<RolModel> GetAll()
+        public ICollection<Rol> GetAll()
         {
             return _context.Roles.ToList();
         }
 
-        public void Add(RolModel rol)
+        public void Add(Rol rol)
         {
             _context.Add(rol);
             _context.SaveChanges(); 
         }
 
-        public void Update(RolModel rol)
+        public void Update(Rol rol)
         {
             _context.Update(rol);
             _context.SaveChanges();
@@ -34,7 +34,7 @@ namespace control_inventario.Services
 
         public void Delete(int id)
         {
-            RolModel? rol = _context.Roles.Where(c => c.Id == id).FirstOrDefault();
+            Rol? rol = _context.Roles.Where(c => c.Id == id).FirstOrDefault();
 
             _context.Remove(rol);
             _context.SaveChanges();

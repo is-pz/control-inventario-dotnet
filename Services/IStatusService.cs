@@ -4,10 +4,10 @@ namespace control_inventario.Services
 {
     public interface IStatusService
     {
-        StatusModel? Get(int id);
-        ICollection<StatusModel> GetAll();
-        void Add(StatusModel status);
-        void Update(StatusModel status);
+        Status? Get(int id);
+        ICollection<Status> GetAll();
+        void Add(Status status);
+        void Update(Status status);
         void Delete(int id);
     }
 }

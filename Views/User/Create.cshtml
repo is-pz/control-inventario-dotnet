@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "_Layout";
+
+    List<Rol> roles = ViewBag.Roles;
+}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+    <div class="card">
+            <div class="card-header text-center" style="display: flex; justify-content: space-between;">
+                <h5>Add user</h5>
+                <a asp-controller="User" asp-action="Index" class="btn btn-light">Back to list</a>
+            </div>
+            <div class="p-1 ml-3">
+                <p>Required <span class="text-danger" style="font-size: 20px;">*</span></p>
+            </div>
+            <div class="card-body">
+                <form asp-controller="User" asp-action="Create" method="POST">
+                    <div class="form-group">
+                        <label for="username" class="col-form-label">Username <span class="text-danger">*</span></label>
+                    <input required name="username" id="username" type="text" class="form-control" placeholder="Enter an username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-form-label">Password <span class="text-danger">*</span></label>
+                        <input required type="password" class="form-control" name="password" id="password" placeholder="Enter a password">
+                    </div>
+                    <div class="form-group">
+                        <label for="idRol">Rol<span class="text-danger">*</span></label>
+                        <select required name="idRol" class="form-control" id="idRol" name="idRol">
+                        <option>Select a user rol</option>
+                        @foreach(var rol in roles)
+                        {
+                            <option value="@rol.Id"> @rol.Name </option>
+                        }
+                    </select>
+                    </div>
+                    <div class="col-sm-6 pl-0">
+                        <p class="text-right">
+                            <button type="submit" class="btn btn-space btn-primary">Add</button>
+                        </p>
+                    </div>
+                </form>
+            </div>
+    </div>
+</div>

@@ -4,10 +4,10 @@ namespace control_inventario.Services
 {
     public interface ISaleService
     {
-        SaleModel? Get(int id);
-        ICollection<SaleModel> GetAll();
-        void Add(SaleModel sale);
-        void Update(SaleModel sale);
+        Sale? Get(int id);
+        ICollection<Sale> GetAll();
+        void Add(Sale sale);
+        void Update(Sale sale);
         void Delete(int id);
     }
 }

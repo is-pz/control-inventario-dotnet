@@ -10,23 +10,23 @@ namespace control_inventario.Services
             this._context = inventario;
         }
 
-        public ProductModel? Get(int id)
+        public Product? Get(int id)
         {
             return _context.Products.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public ICollection<ProductModel> GetAll()
+        public ICollection<Product> GetAll()
         {
             return _context.Products.ToList();
         }
 
-        public void Add(ProductModel product)
+        public void Add(Product product)
         {
             _context.Add(product);
             _context.SaveChanges(); 
         }
 
-        public void Update(ProductModel product)
+        public void Update(Product product)
         {
             _context.Update(product);
             _context.SaveChanges();
@@ -34,7 +34,7 @@ namespace control_inventario.Services
 
         public void Delete(int id)
         {
-            ProductModel? product = _context.Products.Where(c => c.Id == id).FirstOrDefault();
+            Product? product = _context.Products.Where(c => c.Id == id).FirstOrDefault();
 
             _context.Remove(product);
             _context.SaveChanges();

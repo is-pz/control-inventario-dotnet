@@ -4,10 +4,10 @@ namespace control_inventario.Services
 {
     public interface IUserService
     {
-        UserModel? Get(int id);
-        ICollection<UserModel> GetAll();
-        void Add(UserModel user);
-        void Update(UserModel user);
+        User? Get(int id);
+        ICollection<User> GetAll();
+        void Add(User user);
+        void Update(User user);
         void Delete(int id);
     }
 }

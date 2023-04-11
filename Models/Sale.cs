@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace control_inventario.Models;
 
-public partial class SaleModel
+public partial class Sale
 {
     public int Id { get; set; }
 
@@ -13,7 +13,7 @@ public partial class SaleModel
 
     public byte[] SoleAt { get; set; } = null!;
 
-    public virtual UserModel IdUserNavigation { get; set; } = null!;
+    public virtual User IdUserNavigation { get; set; } = null!;
 
-    public virtual ICollection<SaleItemModel> SalesItems { get; } = new List<SaleItemModel>();
+    public virtual ICollection<SalesItem> SalesItems { get; } = new List<SalesItem>();
 }
