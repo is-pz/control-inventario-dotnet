@@ -9,10 +9,10 @@ using control_inventario.Data;
 
 #nullable disable
 
-namespace control_inventario.Migrations
+namespace control_inventario.Data.Migrations
 {
     [DbContext(typeof(InventarioDbContext))]
-    [Migration("20230402215640_InitialCreated")]
+    [Migration("20230411014426_InitialCreated")]
     partial class InitialCreated
     {
         /// <inheritdoc />
@@ -25,7 +25,33 @@ namespace control_inventario.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("control_inventario.Models.ProductModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(150)
+                        .HasColumnType("nchar(150)")
+                        .IsFixedLength();
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -34,10 +60,12 @@ namespace control_inventario.Migrations
                         .HasColumnType("decimal(2, 0)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(250)
                         .IsUnicode(false)
                         .HasColumnType("varchar(250)");
+
+                    b.Property<int>("IdCategory")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -53,10 +81,12 @@ namespace control_inventario.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdCategory");
+
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.RolModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Rol", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -82,7 +112,31 @@ namespace control_inventario.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.SaleItemModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Sale", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUser")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("SoleAt")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<decimal>("TotalSale")
+                        .HasColumnType("decimal(2, 0)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUser");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.SalesItem", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -111,31 +165,7 @@ namespace control_inventario.Migrations
                     b.ToTable("SalesItems");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.SaleModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUser")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("SoleAt")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.Property<decimal>("TotalSale")
-                        .HasColumnType("decimal(2, 0)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdUser");
-
-                    b.ToTable("Sales");
-                });
-
-            modelBuilder.Entity("control_inventario.Models.StatusModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Status", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -156,7 +186,7 @@ namespace control_inventario.Migrations
                     b.ToTable("Status", (string)null);
                 });
 
-            modelBuilder.Entity("control_inventario.Models.UserModel", b =>
+            modelBuilder.Entity("control_inventario.Models.User", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -197,9 +227,31 @@ namespace control_inventario.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.RolModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Category", b =>
                 {
-                    b.HasOne("control_inventario.Models.StatusModel", "IdStatusNavigation")
+                    b.HasOne("control_inventario.Models.Status", "StatusNavigation")
+                        .WithMany("Categories")
+                        .HasForeignKey("Status")
+                        .IsRequired()
+                        .HasConstraintName("FK_Categories_Categories");
+
+                    b.Navigation("StatusNavigation");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.Product", b =>
+                {
+                    b.HasOne("control_inventario.Models.Category", "IdCategoryNavigation")
+                        .WithMany("Products")
+                        .HasForeignKey("IdCategory")
+                        .IsRequired()
+                        .HasConstraintName("FK_Products_Categories");
+
+                    b.Navigation("IdCategoryNavigation");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.Rol", b =>
+                {
+                    b.HasOne("control_inventario.Models.Status", "IdStatusNavigation")
                         .WithMany("Roles")
                         .HasForeignKey("IdStatus")
                         .IsRequired()
@@ -208,15 +260,26 @@ namespace control_inventario.Migrations
                     b.Navigation("IdStatusNavigation");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.SaleItemModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Sale", b =>
                 {
-                    b.HasOne("control_inventario.Models.ProductModel", "IdProductNavigation")
+                    b.HasOne("control_inventario.Models.User", "IdUserNavigation")
+                        .WithMany("Sales")
+                        .HasForeignKey("IdUser")
+                        .IsRequired()
+                        .HasConstraintName("FK_Sales_Users");
+
+                    b.Navigation("IdUserNavigation");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.SalesItem", b =>
+                {
+                    b.HasOne("control_inventario.Models.Product", "IdProductNavigation")
                         .WithMany("SalesItems")
                         .HasForeignKey("IdProduct")
                         .IsRequired()
                         .HasConstraintName("FK_SalesItems_Products");
 
-                    b.HasOne("control_inventario.Models.SaleModel", "IdSaleNavigation")
+                    b.HasOne("control_inventario.Models.Sale", "IdSaleNavigation")
                         .WithMany("SalesItems")
                         .HasForeignKey("IdSale")
                         .IsRequired()
@@ -227,26 +290,15 @@ namespace control_inventario.Migrations
                     b.Navigation("IdSaleNavigation");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.SaleModel", b =>
+            modelBuilder.Entity("control_inventario.Models.User", b =>
                 {
-                    b.HasOne("control_inventario.Models.UserModel", "IdUserNavigation")
-                        .WithMany("Sales")
-                        .HasForeignKey("IdUser")
-                        .IsRequired()
-                        .HasConstraintName("FK_Sales_Users");
-
-                    b.Navigation("IdUserNavigation");
-                });
-
-            modelBuilder.Entity("control_inventario.Models.UserModel", b =>
-                {
-                    b.HasOne("control_inventario.Models.RolModel", "IdRolNavigation")
+                    b.HasOne("control_inventario.Models.Rol", "IdRolNavigation")
                         .WithMany("Users")
                         .HasForeignKey("IdRol")
                         .IsRequired()
                         .HasConstraintName("FK_Users_Roles");
 
-                    b.HasOne("control_inventario.Models.StatusModel", "IdStatusNavigation")
+                    b.HasOne("control_inventario.Models.Status", "IdStatusNavigation")
                         .WithMany("Users")
                         .HasForeignKey("IdStatus")
                         .IsRequired()
@@ -257,29 +309,36 @@ namespace control_inventario.Migrations
                     b.Navigation("IdStatusNavigation");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.ProductModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("control_inventario.Models.Product", b =>
                 {
                     b.Navigation("SalesItems");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.RolModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Rol", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.SaleModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Sale", b =>
                 {
                     b.Navigation("SalesItems");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.StatusModel", b =>
+            modelBuilder.Entity("control_inventario.Models.Status", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("Roles");
 
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("control_inventario.Models.UserModel", b =>
+            modelBuilder.Entity("control_inventario.Models.User", b =>
                 {
                     b.Navigation("Sales");
                 });

@@ -16,24 +16,42 @@ public partial class InventarioDbContext : DbContext
     {
     }
 
-    public virtual DbSet<ProductModel> Products { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<RolModel> Roles { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<SaleModel> Sales { get; set; }
+    public virtual DbSet<Rol> Roles { get; set; }
 
-    public virtual DbSet<SaleItemModel> SalesItems { get; set; }
+    public virtual DbSet<Sale> Sales { get; set; }
 
-    public virtual DbSet<StatusModel> Status { get; set; }
+    public virtual DbSet<SalesItem> SalesItems { get; set; }
 
-    public virtual DbSet<UserModel> Users { get; set; }
+    public virtual DbSet<Status> Statuses { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=ConnectionStrings:InventarioDb");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ProductModel>(entity =>
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Description)
+                .HasMaxLength(150)
+                .IsFixedLength();
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Categories)
+                .HasForeignKey(d => d.Status)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Categories_Categories");
+        });
+
+        modelBuilder.Entity<Product>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CostPrice).HasColumnType("decimal(2, 0)");
@@ -44,9 +62,14 @@ public partial class InventarioDbContext : DbContext
                 .HasMaxLength(150)
                 .IsUnicode(false);
             entity.Property(e => e.SalePrice).HasColumnType("decimal(2, 0)");
+
+            entity.HasOne(d => d.IdCategoryNavigation).WithMany(p => p.Products)
+                .HasForeignKey(d => d.IdCategory)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Products_Categories");
         });
 
-        modelBuilder.Entity<RolModel>(entity =>
+        modelBuilder.Entity<Rol>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Description)
@@ -62,7 +85,7 @@ public partial class InventarioDbContext : DbContext
                 .HasConstraintName("FK_Roles_Status");
         });
 
-        modelBuilder.Entity<SaleModel>(entity =>
+        modelBuilder.Entity<Sale>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.SoleAt)
@@ -76,7 +99,7 @@ public partial class InventarioDbContext : DbContext
                 .HasConstraintName("FK_Sales_Users");
         });
 
-        modelBuilder.Entity<SaleItemModel>(entity =>
+        modelBuilder.Entity<SalesItem>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.SalePrice).HasColumnType("decimal(2, 0)");
@@ -93,7 +116,7 @@ public partial class InventarioDbContext : DbContext
                 .HasConstraintName("FK_SalesItems_Sales");
         });
 
-        modelBuilder.Entity<StatusModel>(entity =>
+        modelBuilder.Entity<Status>(entity =>
         {
             entity.ToTable("Status");
 
@@ -104,7 +127,7 @@ public partial class InventarioDbContext : DbContext
                 .IsUnicode(false);
         });
 
-        modelBuilder.Entity<UserModel>(entity =>
+        modelBuilder.Entity<User>(entity =>
         {
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt)

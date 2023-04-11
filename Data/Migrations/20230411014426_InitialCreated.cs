@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace control_inventario.Migrations
+namespace control_inventario.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreated : Migration
@@ -11,22 +11,6 @@ namespace control_inventario.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
-                    Description = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: false),
-                    CostPrice = table.Column<decimal>(type: "decimal(2,0)", nullable: false),
-                    SalePrice = table.Column<decimal>(type: "decimal(2,0)", nullable: false),
-                    QuantityStock = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Id);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Status",
                 columns: table => new
@@ -38,6 +22,25 @@ namespace control_inventario.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Status", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nchar(150)", fixedLength: true, maxLength: 150, nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Categories_Categories",
+                        column: x => x.Status,
+                        principalTable: "Status",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -56,6 +59,28 @@ namespace control_inventario.Migrations
                         name: "FK_Roles_Status",
                         column: x => x.IdStatus,
                         principalTable: "Status",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false),
+                    IdCategory = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
+                    Description = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
+                    CostPrice = table.Column<decimal>(type: "decimal(2,0)", nullable: false),
+                    SalePrice = table.Column<decimal>(type: "decimal(2,0)", nullable: false),
+                    QuantityStock = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Products_Categories",
+                        column: x => x.IdCategory,
+                        principalTable: "Categories",
                         principalColumn: "Id");
                 });
 
@@ -132,6 +157,16 @@ namespace control_inventario.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_Status",
+                table: "Categories",
+                column: "Status");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_IdCategory",
+                table: "Products",
+                column: "IdCategory");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Roles_IdStatus",
                 table: "Roles",
                 column: "IdStatus");
@@ -173,6 +208,9 @@ namespace control_inventario.Migrations
 
             migrationBuilder.DropTable(
                 name: "Sales");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Users");
